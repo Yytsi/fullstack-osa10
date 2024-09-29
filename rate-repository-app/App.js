@@ -1,11 +1,16 @@
 // I use prettier instead of ESLint here; README for more.
 
-import Main from "./src/components/Main";
+import "@expo/metro-runtime"; // Fixed a bug for me
 
-import "@expo/metro-runtime";
+import Main from "./src/components/Main";
+import { NativeRouter } from "react-router-native";
 
 const App = () => {
-  return <Main />;
+  return (
+    <NativeRouter>
+      <Main />
+    </NativeRouter>
+  );
 };
 
 export default App;
