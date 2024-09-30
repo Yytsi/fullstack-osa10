@@ -2,6 +2,7 @@ import { Text, StyleSheet, View, Pressable } from "react-native";
 import { Route, Routes, Navigate, Link } from "react-router-native";
 
 import RepositoryList from "./RepositoryList";
+import SignIn from "./SignIn";
 import AppBar from "./AppBar";
 
 const styles = StyleSheet.create({
@@ -33,7 +34,7 @@ const Main = () => {
         {/* Route for the main view */}
         <Route path="/" element={<RepositoryList />} />
         {/* Route for the sign in view */}
-        <Route path="/signin" element={<Text>Sign in</Text>} />
+        <Route path="/signin" element={<SignIn />} />
         {/* In case of no match, take to main view */}
         <Route path="*" element={<Navigate to="/" />} />{" "}
       </Routes>
