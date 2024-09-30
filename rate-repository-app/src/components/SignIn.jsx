@@ -54,6 +54,7 @@ const SignIn = () => {
         placeholder="Password"
         onChangeText={formik.handleChange("password")}
         value={formik.values.password}
+        secureTextEntry
       />
       <Pressable onPress={formik.handleSubmit} style={styles.signInSubmit}>
         <Text style={styles.signInSubmitText}>Sign in</Text>
