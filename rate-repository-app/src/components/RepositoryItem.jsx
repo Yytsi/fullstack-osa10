@@ -1,4 +1,6 @@
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
+
+import Text from "./Text";
 
 const RepositoryItem = ({ repository }) => {
   const roundNumber = (number) =>

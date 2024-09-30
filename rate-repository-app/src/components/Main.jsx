@@ -1,9 +1,10 @@
-import { Text, StyleSheet, View, Pressable } from "react-native";
+import { StyleSheet, View, Pressable } from "react-native";
 import { Route, Routes, Navigate, Link } from "react-router-native";
 
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import AppBar from "./AppBar";
+import Text from "./Text";
 
 const styles = StyleSheet.create({
   container: {
