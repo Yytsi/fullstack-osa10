@@ -50,7 +50,6 @@ const styles = StyleSheet.create({
 const SignIn = () => {
   const [signIn] = useSignIn();
   const navigate = useNavigate();
-  const authStorage = useAuthStorage();
 
   const formik = useFormik({
     initialValues,
