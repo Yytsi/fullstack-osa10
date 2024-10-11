@@ -1,10 +1,15 @@
 import { StyleSheet, View, Pressable } from "react-native";
 import { Route, Routes, Navigate, Link } from "react-router-native";
+import { useQuery } from "@apollo/client";
+import { useApolloClient } from "@apollo/client";
 
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import AppBar from "./AppBar";
 import Text from "./Text";
+import useAuthStorage from "../hooks/useApolloClient";
+
+import { GET_AUTHENTICATION_INFORMATION } from "../graphql/queries";
 
 const styles = StyleSheet.create({
   container: {
@@ -21,15 +26,37 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
+  // useQuery hook to get user
+  const { data, loading, error } = useQuery(GET_AUTHENTICATION_INFORMATION);
+  const apolloClient = useApolloClient();
+  const authStorage = useAuthStorage();
+
+  if (loading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   return (
     <View style={styles.container}>
       <AppBar>
         <Link to="/" component={Pressable}>
           <Text style={styles.tabLink}>Repositories</Text>
         </Link>
-        <Link to="/signin" component={Pressable}>
-          <Text style={styles.tabLink}>Sign in</Text>
-        </Link>
+        {data?.me?.username == null ? (
+          <Link to="/signin" component={Pressable}>
+            <Text style={styles.tabLink}>Sign in</Text>
+          </Link>
+        ) : (
+          <Link
+            to="/"
+            component={Pressable}
+            onPress={async () => {
+              await authStorage.removeAccessToken();
+              await apolloClient.resetStore();
+              console.log("User has logged out");
+            }}
+          >
+            <Text style={styles.tabLink}>Sign out</Text>
+          </Link>
+        )}
       </AppBar>
       <Routes>
         {/* Route for the main view */}

@@ -26,3 +26,12 @@ export const SIGN_USER_IN = gql`
     }
   }
 `;
+
+export const GET_AUTHENTICATION_INFORMATION = gql`
+  query {
+    me {
+      id
+      username
+    }
+  }
+`;

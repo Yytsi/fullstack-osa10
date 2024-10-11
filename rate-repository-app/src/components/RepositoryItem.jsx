@@ -6,7 +6,6 @@ const RepositoryItem = ({ repository }) => {
   const roundNumber = (number) =>
     number >= 1000 ? `${(number / 1000).toFixed(1)}k` : number;
 
-  console.log(repository);
   return (
     <View style={styles.container}>
       <View style={styles.innerRow}>
