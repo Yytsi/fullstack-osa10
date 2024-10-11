@@ -7,8 +7,6 @@ import useSignIn from "../hooks/useSignIn";
 import Text from "./Text";
 import { useNavigate } from "react-router-native";
 
-import useAuthStorage from "../hooks/useAuthStorage";
-
 const initialValues = {
   username: "",
   password: "",
