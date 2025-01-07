@@ -32,6 +32,7 @@ const Main = () => {
   const authStorage = useAuthStorage();
 
   if (loading) return <Text>Loading...</Text>;
+
   if (error) return <Text>Error: {error.message}</Text>;
 
   return (

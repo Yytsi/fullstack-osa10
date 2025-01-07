@@ -29,4 +29,5 @@ export default {
     env: process.env.ENV,
     APOLLO_URI: process.env.APOLLO_URI,
   },
+  newArchEnabled: true,
 };

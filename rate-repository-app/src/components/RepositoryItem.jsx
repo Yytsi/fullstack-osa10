@@ -7,7 +7,7 @@ const RepositoryItem = ({ repository }) => {
     number >= 1000 ? `${(number / 1000).toFixed(1)}k` : number;
 
   return (
-    <View style={styles.container}>
+    <View testID="repositoryItem" style={styles.container}>
       <View style={styles.innerRow}>
         <Image
           style={styles.image}
@@ -17,7 +17,7 @@ const RepositoryItem = ({ repository }) => {
           <Text
             style={[
               styles.midTextElement,
-              { fontWeight: "bold", fontSize: "18" },
+              { fontWeight: "bold", fontSize: 18 },
             ]}
           >
             {repository.fullName}
@@ -30,6 +30,7 @@ const RepositoryItem = ({ repository }) => {
                 fontSize: 15,
               },
             ]}
+            testID="repositoryItemDescription"
           >
             {repository.description}
           </Text>
