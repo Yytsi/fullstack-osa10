@@ -45,6 +45,61 @@ const styles = StyleSheet.create({
   },
 });
 
+export const SignInContainer = ({ onSubmit }) => {
+  const formik = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit,
+  });
+
+  return (
+    <View style={styles.signInView}>
+      <TextInput
+        testID="signInUsernameField"
+        style={[
+          styles.signInTextField,
+          formik.touched.username &&
+            formik.errors.username &&
+            styles.signInTextFieldError,
+        ]}
+        placeholder="Username"
+        onChangeText={formik.handleChange("username")}
+        value={formik.values.username}
+      />
+      {formik.touched.username && formik.errors.username ? (
+        <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
+          {formik.errors.username}{" "}
+        </Text>
+      ) : null}
+      <TextInput
+        testID="signInPasswordField"
+        style={[
+          styles.signInTextField,
+          formik.touched.username &&
+            formik.errors.username &&
+            styles.signInTextFieldError,
+        ]}
+        placeholder="Password"
+        onChangeText={formik.handleChange("password")}
+        value={formik.values.password}
+        secureTextEntry
+      />
+      {formik.touched.password && formik.errors.password ? (
+        <Text style={{ color: "red", marginTop: -10, marginBottom: 15 }}>
+          {formik.errors.password}{" "}
+        </Text>
+      ) : null}
+      <Pressable
+        onPress={formik.handleSubmit}
+        style={styles.signInSubmit}
+        testID="signInSubmit"
+      >
+        <Text style={styles.signInSubmitText}>Sign in</Text>
+      </Pressable>
+    </View>
+  );
+};
+
 const SignIn = () => {
   const [signIn] = useSignIn();
   const navigate = useNavigate();
@@ -72,46 +127,7 @@ const SignIn = () => {
     }
   };
 
-  return (
-    <View style={styles.signInView}>
-      <TextInput
-        style={[
-          styles.signInTextField,
-          formik.touched.username &&
-            formik.errors.username &&
-            styles.signInTextFieldError,
-        ]}
-        placeholder="Username"
-        onChangeText={formik.handleChange("username")}
-        value={formik.values.username}
-      />
-      {formik.touched.username && formik.errors.username ? (
-        <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
-          {formik.errors.username}{" "}
-        </Text>
-      ) : null}
-      <TextInput
-        style={[
-          styles.signInTextField,
-          formik.touched.username &&
-            formik.errors.username &&
-            styles.signInTextFieldError,
-        ]}
-        placeholder="Password"
-        onChangeText={formik.handleChange("password")}
-        value={formik.values.password}
-        secureTextEntry
-      />
-      {formik.touched.password && formik.errors.password ? (
-        <Text style={{ color: "red", marginTop: -10, marginBottom: 15 }}>
-          {formik.errors.password}{" "}
-        </Text>
-      ) : null}
-      <Pressable onPress={formik.handleSubmit} style={styles.signInSubmit}>
-        <Text style={styles.signInSubmitText}>Sign in</Text>
-      </Pressable>
-    </View>
-  );
+  return <SignInContainer onSubmit={onSubmit} />;
 };
 
 export default SignIn;
