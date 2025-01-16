@@ -8,6 +8,7 @@ import SignIn from "./SignIn";
 import AppBar from "./AppBar";
 import Text from "./Text";
 import useAuthStorage from "../hooks/useApolloClient";
+import RepositoryItem from "./RepositoryItem";
 
 import { GET_AUTHENTICATION_INFORMATION } from "../graphql/queries";
 
@@ -64,6 +65,11 @@ const Main = () => {
         <Route path="/" element={<RepositoryList />} />
         {/* Route for the sign in view */}
         <Route path="/signin" element={<SignIn />} />
+        {/* Route for the single repository view */}
+        <Route
+          path="/:id"
+          element={<RepositoryItem showGithubButton={true} />}
+        />
         {/* In case of no match, take to main view */}
         <Route path="*" element={<Navigate to="/" />} />{" "}
       </Routes>

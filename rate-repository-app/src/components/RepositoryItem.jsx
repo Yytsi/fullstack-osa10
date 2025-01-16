@@ -1,8 +1,31 @@
-import { View, Image, StyleSheet } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
+
+import { useParams } from "react-router-native";
+import { useQuery } from "@apollo/client";
+
+import { GET_REPOSITORY } from "../graphql/queries";
 
 import Text from "./Text";
 
-const RepositoryItem = ({ repository }) => {
+const RepositoryItem = ({ repo, showGithubButton = false }) => {
+  const { id } = useParams();
+
+  const { data, loading, error } = useQuery(GET_REPOSITORY, {
+    variables: { id },
+    skip: !!repo,
+  });
+
+  const repository = repo || data?.repository;
+
+  if (!repository || loading) return <Text>Loading...</Text>;
+  if (error) return <Text>Error: {error.message}</Text>;
+
   const roundNumber = (number) =>
     number >= 1000 ? `${(number / 1000).toFixed(1)}k` : number;
 
@@ -77,6 +100,16 @@ const RepositoryItem = ({ repository }) => {
           <Text style={styles.label}>Rating</Text>
         </View>
       </View>
+      <View style={styles.buttonContainer}>
+        {showGithubButton && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => Linking.openURL(repository.url)}
+          >
+            <Text style={styles.buttonText}>Open in GitHub</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -123,6 +156,20 @@ const styles = StyleSheet.create({
   label: {
     color: "#606060",
     fontSize: 16,
+  },
+  buttonContainer: {
+    marginTop: 10,
+  },
+  button: {
+    backgroundColor: "#0366d6",
+    padding: 10,
+    alignItems: "center",
+    borderRadius: 5,
+  },
+  buttonText: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "bold",
   },
 });
 
