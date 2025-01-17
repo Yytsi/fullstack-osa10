@@ -15,6 +15,7 @@
     "@apollo/client": "^3.11.8",
     "@expo/metro-config": "^0.17.1",
     "@react-native-async-storage/async-storage": "^1.21.0",
+    "date-fns": "^4.1.0",
     "dotenv": "^16.4.5",
     "expo-status-bar": "^1.11.1",
     "formik": "^2.4.6",
@@ -50,6 +51,8 @@
     "transformIgnorePatterns": [
       "node_modules/(?!((jest-)?react-native|@react-native(-community)?)|expo(nent)?|@expo(nent)?/.*|@expo-google-fonts/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|react-native-svg|react-router-native)"
     ],
-    "setupFilesAfterEnv": ["<rootDir>/setupTests.js"]
+    "setupFilesAfterEnv": [
+      "<rootDir>/setupTests.js"
+    ]
   }
 }

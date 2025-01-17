@@ -24,7 +24,7 @@ export const RepositoryListContainer = ({ repositories }) => {
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
         <Pressable onPress={() => navigate(`/${item.id}`)}>
-          <RepositoryItem repo={item} showGithubButton={false} />
+          <RepositoryItem repository={item} isSingleItem={false} />
         </Pressable>
       )}
     />

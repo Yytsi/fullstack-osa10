@@ -6,26 +6,9 @@ import {
   Linking,
 } from "react-native";
 
-import { useParams } from "react-router-native";
-import { useQuery } from "@apollo/client";
-
-import { GET_REPOSITORY } from "../graphql/queries";
-
 import Text from "./Text";
 
-const RepositoryItem = ({ repo, showGithubButton = false }) => {
-  const { id } = useParams();
-
-  const { data, loading, error } = useQuery(GET_REPOSITORY, {
-    variables: { id },
-    skip: !!repo,
-  });
-
-  const repository = repo || data?.repository;
-
-  if (!repository || loading) return <Text>Loading...</Text>;
-  if (error) return <Text>Error: {error.message}</Text>;
-
+const RepositoryItem = ({ repository, isSingleItem = false }) => {
   const roundNumber = (number) =>
     number >= 1000 ? `${(number / 1000).toFixed(1)}k` : number;
 
@@ -101,7 +84,7 @@ const RepositoryItem = ({ repo, showGithubButton = false }) => {
         </View>
       </View>
       <View style={styles.buttonContainer}>
-        {showGithubButton && (
+        {isSingleItem && (
           <TouchableOpacity
             style={styles.button}
             onPress={() => Linking.openURL(repository.url)}
