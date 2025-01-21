@@ -77,11 +77,16 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const SingleRepository = () => {
   const { id } = useParams();
 
+  console.log("ID: ", id);
+
   const { data, loading, error } = useQuery(GET_REPOSITORY, {
+    fetchPolicy: "cache-and-network",
     variables: { id },
   });
 
   const repository = data?.repository;
+
+  console.log("Repository: ", repository);
 
   if (!repository || loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message + ""}</Text>;

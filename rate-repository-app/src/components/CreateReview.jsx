@@ -6,10 +6,8 @@ import { useFormik } from "formik";
 import Text from "./Text";
 import { useNavigate } from "react-router-native";
 
-const initialValues = {
-  username: "",
-  password: "",
-};
+import { useMutation } from "@apollo/client";
+import { CREATE_REVIEW_MUTATION } from "../graphql/queries";
 
 const validationSchema = yup.object().shape({
   repositoryOwner: yup.string().required("Repository owner name is required"),
@@ -59,13 +57,17 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     marginBottom: 15,
     height: 40,
-    // text align center
   },
 });
 
 export const CreateReviewContainer = ({ onSubmit }) => {
   const formik = useFormik({
-    initialValues,
+    initialValues: {
+      repositoryOwner: "",
+      repositoryName: "",
+      repositoryRating: "",
+      repositoryReview: "",
+    },
     validationSchema,
     onSubmit,
   });
@@ -75,34 +77,33 @@ export const CreateReviewContainer = ({ onSubmit }) => {
       <TextInput
         style={[
           styles.createReviewTextField,
-          formik.touched.username &&
-            formik.errors.username &&
+          formik.touched.repositoryOwner &&
+            formik.errors.repositoryOwner &&
             styles.createReviewTextFieldError,
         ]}
         placeholder="Repository owner name"
-        onChangeText={formik.handleChange("username")}
-        value={formik.values.username}
+        onChangeText={formik.handleChange("repositoryOwner")}
+        value={formik.values.repositoryOwner}
       />
-      {formik.touched.username && formik.errors.username ? (
+      {formik.touched.repositoryOwner && formik.errors.repositoryOwner ? (
         <Text style={{ color: "red", marginTop: -10, marginBottom: 10 }}>
-          {formik.errors.username}{" "}
+          {formik.errors.repositoryOwner}{" "}
         </Text>
       ) : null}
       <TextInput
         style={[
           styles.createReviewTextField,
-          formik.touched.username &&
-            formik.errors.username &&
+          formik.touched.repositoryName &&
+            formik.errors.repositoryName &&
             styles.createReviewTextFieldError,
         ]}
         placeholder="Repository name"
-        onChangeText={formik.handleChange("password")}
-        value={formik.values.password}
-        secureTextEntry
+        onChangeText={formik.handleChange("repositoryName")}
+        value={formik.values.repositoryName}
       />
-      {formik.touched.password && formik.errors.password ? (
+      {formik.touched.repositoryName && formik.errors.repositoryName ? (
         <Text style={{ color: "red", marginTop: -10, marginBottom: 15 }}>
-          {formik.errors.password}{" "}
+          {formik.errors.repositoryName}{" "}
         </Text>
       ) : null}
       <TextInput
@@ -149,6 +150,9 @@ export const CreateReviewContainer = ({ onSubmit }) => {
 
 const CreateReview = () => {
   const navigate = useNavigate();
+  const [createReview, { isLoading, isError, mutate }] = useMutation(
+    CREATE_REVIEW_MUTATION
+  );
 
   const handleSubmit = async (values) => {
     const {
@@ -159,16 +163,25 @@ const CreateReview = () => {
     } = values;
 
     try {
-      // will be changed to createReview mutation
-      const { data } = await signIn({ username, password });
-      if (data) {
-        console.log("Sign in was succesful");
-        navigate("/");
-      }
+      const response = await createReview({
+        variables: {
+          review: {
+            ownerName: repositoryOwner,
+            repositoryName: repositoryName,
+            rating: parseInt(repositoryRating),
+            text: repositoryReview,
+          },
+        },
+      });
+
+      navigate(`/${response.data.createReview.repositoryId}`);
     } catch (e) {
-      console.log("Sign in error: ", e);
+      console.error("Error creating review: ", e);
     }
   };
+
+  if (isLoading) return <Text>Loading...</Text>;
+  if (isError) return <Text>Error: {error.message}</Text>;
 
   return <CreateReviewContainer onSubmit={handleSubmit} />;
 };

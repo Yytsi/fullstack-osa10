@@ -45,9 +45,12 @@ const Main = () => {
         <Link to="/" component={Pressable}>
           <Text style={styles.tabLink}>Repositories</Text>
         </Link>
-        <Link to="/create_review" component={Pressable}>
-          <Text style={styles.tabLink}>Create a review</Text>
-        </Link>
+
+        {data?.me?.username != null && (
+          <Link to="/create_review" component={Pressable}>
+            <Text style={styles.tabLink}>Create a review</Text>
+          </Link>
+        )}
         {data?.me?.username == null ? (
           <Link to="/signin" component={Pressable}>
             <Text style={styles.tabLink}>Sign in</Text>

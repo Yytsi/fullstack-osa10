@@ -68,3 +68,13 @@ export const GET_AUTHENTICATION_INFORMATION = gql`
     }
   }
 `;
+
+export const CREATE_REVIEW_MUTATION = gql`
+  mutation CreateReview($review: CreateReviewInput!) {
+    createReview(review: $review) {
+      repositoryId
+      rating
+      text
+    }
+  }
+`;
