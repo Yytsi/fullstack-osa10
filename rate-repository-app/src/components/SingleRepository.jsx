@@ -83,8 +83,6 @@ const SingleRepository = () => {
 
   const repository = data?.repository;
 
-  console.log("revs", repository?.reviews.edges);
-
   if (!repository || loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message + ""}</Text>;
 

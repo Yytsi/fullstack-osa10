@@ -9,6 +9,7 @@ import AppBar from "./AppBar";
 import Text from "./Text";
 import useAuthStorage from "../hooks/useApolloClient";
 import SingleRepository from "./SingleRepository";
+import CreateReview from "./CreateReview";
 
 import { GET_AUTHENTICATION_INFORMATION } from "../graphql/queries";
 
@@ -23,6 +24,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     padding: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });
 
@@ -41,6 +44,9 @@ const Main = () => {
       <AppBar>
         <Link to="/" component={Pressable}>
           <Text style={styles.tabLink}>Repositories</Text>
+        </Link>
+        <Link to="/create_review" component={Pressable}>
+          <Text style={styles.tabLink}>Create a review</Text>
         </Link>
         {data?.me?.username == null ? (
           <Link to="/signin" component={Pressable}>
@@ -63,6 +69,7 @@ const Main = () => {
       <Routes>
         {/* Route for the main view */}
         <Route path="/" element={<RepositoryList />} />
+        <Route path="/create_review" element={<CreateReview />} />
         {/* Route for the sign in view */}
         <Route path="/signin" element={<SignIn />} />
         {/* Route for the single repository view */}
