@@ -3,7 +3,7 @@ import * as yup from "yup";
 import { TextInput, Pressable, View, StyleSheet } from "react-native";
 import { useFormik } from "formik";
 
-import useSignIn from "../hooks/useSignIn";
+import usesignUp from "../hooks/useSignIn";
 import Text from "./Text";
 import { useNavigate } from "react-router-native";
 
@@ -18,34 +18,34 @@ const validationSchema = yup.object().shape({
 });
 
 const styles = StyleSheet.create({
-  signInView: {
+  signUpView: {
     backgroundColor: "white",
     padding: 12,
   },
-  signInTextField: {
+  signUpTextField: {
     padding: 10,
     borderColor: "grey",
     borderWidth: 0.4,
     borderRadius: 3,
     marginBottom: 15,
   },
-  signInTextFieldError: {
+  signUpTextFieldError: {
     borderColor: "#d73a4a",
   },
-  signInSubmit: {
+  signUpSubmit: {
     backgroundColor: "#0366d6",
     padding: 15,
     borderRadius: 3,
     alignItems: "center",
   },
-  signInSubmitText: {
+  signUpSubmitText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 15,
   },
 });
 
-export const SignInContainer = ({ onSubmit }) => {
+export const SignUpContainer = ({ onSubmit }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -53,14 +53,14 @@ export const SignInContainer = ({ onSubmit }) => {
   });
 
   return (
-    <View style={styles.signInView}>
+    <View style={styles.signUpView}>
       <TextInput
-        testID="signInUsernameField"
+        testID="signUpUsernameField"
         style={[
-          styles.signInTextField,
+          styles.signUpTextField,
           formik.touched.username &&
             formik.errors.username &&
-            styles.signInTextFieldError,
+            styles.signUpTextFieldError,
         ]}
         placeholder="Username"
         onChangeText={formik.handleChange("username")}
@@ -72,12 +72,12 @@ export const SignInContainer = ({ onSubmit }) => {
         </Text>
       ) : null}
       <TextInput
-        testID="signInPasswordField"
+        testID="signUpPasswordField"
         style={[
-          styles.signInTextField,
+          styles.signUpTextField,
           formik.touched.username &&
             formik.errors.username &&
-            styles.signInTextFieldError,
+            styles.signUpTextFieldError,
         ]}
         placeholder="Password"
         onChangeText={formik.handleChange("password")}
@@ -91,17 +91,17 @@ export const SignInContainer = ({ onSubmit }) => {
       ) : null}
       <Pressable
         onPress={formik.handleSubmit}
-        style={styles.signInSubmit}
-        testID="signInSubmit"
+        style={styles.signUpSubmit}
+        testID="signUpSubmit"
       >
-        <Text style={styles.signInSubmitText}>Sign in</Text>
+        <Text style={styles.signUpSubmitText}>Sign in</Text>
       </Pressable>
     </View>
   );
 };
 
-const SignIn = () => {
-  const [signIn] = useSignIn();
+const SignUp = () => {
+  const [signUp] = usesignUp();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -116,17 +116,17 @@ const SignIn = () => {
     const { username, password } = values;
 
     try {
-      const { data } = await signIn({ username, password });
+      const { data } = await signUp({ username, password });
       if (data) {
-        console.log("Sign in was succesful");
+        console.log("Sign up was succesful");
         navigate("/");
       }
     } catch (e) {
-      console.log("Sign in error: ", e);
+      console.log("Sign up error: ", e);
     }
   };
 
-  return <SignInContainer onSubmit={onSubmit} />;
+  return <SignUpContainer onSubmit={onSubmit} />;
 };
 
-export default SignIn;
+export default SignUp;

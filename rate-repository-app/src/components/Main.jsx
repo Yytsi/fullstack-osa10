@@ -5,6 +5,7 @@ import { useApolloClient } from "@apollo/client";
 
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
 import AppBar from "./AppBar";
 import Text from "./Text";
 import useAuthStorage from "../hooks/useApolloClient";
@@ -68,6 +69,9 @@ const Main = () => {
             <Text style={styles.tabLink}>Sign out</Text>
           </Link>
         )}
+        <Link to="/signup" component={Pressable}>
+          <Text style={styles.tabLink}>Sign up</Text>
+        </Link>
       </AppBar>
       <Routes>
         {/* Route for the main view */}
