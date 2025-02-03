@@ -2,6 +2,7 @@ import * as yup from "yup";
 
 import { TextInput, Pressable, View, StyleSheet } from "react-native";
 import { useFormik } from "formik";
+import { useState } from "react";
 
 import useSignIn from "../hooks/useSignIn";
 import Text from "./Text";
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export const SignInContainer = ({ onSubmit }) => {
+export const SignInContainer = ({ onSubmit, signInError = null }) => {
   const formik = useFormik({
     initialValues,
     validationSchema,
@@ -89,6 +90,13 @@ export const SignInContainer = ({ onSubmit }) => {
           {formik.errors.password}{" "}
         </Text>
       ) : null}
+
+      {signInError && (
+        <Text style={{ color: "red", marginTop: -10, marginBottom: 15 }}>
+          {signInError}
+        </Text>
+      )}
+
       <Pressable
         onPress={formik.handleSubmit}
         style={styles.signInSubmit}
@@ -104,13 +112,7 @@ const SignIn = () => {
   const [signIn] = useSignIn();
   const navigate = useNavigate();
 
-  const formik = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: (values) => {
-      onSubmit(values);
-    },
-  });
+  const [signInError, setSignInError] = useState(null);
 
   const onSubmit = async (values) => {
     const { username, password } = values;
@@ -118,15 +120,15 @@ const SignIn = () => {
     try {
       const { data } = await signIn({ username, password });
       if (data) {
-        console.log("Sign in was succesful");
         navigate("/");
       }
     } catch (e) {
-      console.log("Sign in error: ", e);
+      setSignInError(e.message || "Unknown sign in error");
+      console.log("Sign in error:  ", e.message || "Unknown sign in error");
     }
   };
 
-  return <SignInContainer onSubmit={onSubmit} />;
+  return <SignInContainer onSubmit={onSubmit} signInError={signInError} />;
 };
 
 export default SignIn;

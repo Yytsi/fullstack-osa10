@@ -79,6 +79,8 @@ const Main = () => {
         <Route path="/create_review" element={<CreateReview />} />
         {/* Route for the sign in view */}
         <Route path="/signin" element={<SignIn />} />
+        {/* Route for the sign up view */}
+        <Route path="/signup" element={<SignUp />} />
         {/* Route for the single repository view */}
         <Route path="/:id" element={<SingleRepository />} />
         {/* In case of no match, take to main view */}

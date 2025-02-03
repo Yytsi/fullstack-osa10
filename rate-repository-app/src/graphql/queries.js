@@ -60,6 +60,15 @@ export const SIGN_USER_IN = gql`
   }
 `;
 
+export const SIGN_USER_UP = gql`
+  mutation CreateUser($user: CreateUserInput) {
+    createUser(user: $user) {
+      id
+      username
+    }
+  }
+`;
+
 export const GET_AUTHENTICATION_INFORMATION = gql`
   query {
     me {
