@@ -12,11 +12,18 @@ const styles = StyleSheet.create({
 
 const ItemSeparator = () => <View style={styles.separator} />;
 
-export const RepositoryListContainer = ({ repositories }) => {
+export const RepositoryListContainer = ({
+  repositories,
+  backwards = false,
+}) => {
   const navigate = useNavigate();
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
+
+  if (backwards) {
+    repositoryNodes.reverse();
+  }
 
   return (
     <FlatList
@@ -31,10 +38,15 @@ export const RepositoryListContainer = ({ repositories }) => {
   );
 };
 
-const RepositoryList = () => {
-  const { repositories } = useRepositories();
+const RepositoryList = ({ ordering = "CREATED_AT" }) => {
+  const { repositories } = useRepositories(ordering);
 
-  return <RepositoryListContainer repositories={repositories} />;
+  return (
+    <RepositoryListContainer
+      repositories={repositories}
+      backwards={ordering.endsWith("_LOW")}
+    />
+  );
 };
 
 export default RepositoryList;

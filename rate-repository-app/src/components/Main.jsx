@@ -2,6 +2,9 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { Route, Routes, Navigate, Link } from "react-router-native";
 import { useQuery } from "@apollo/client";
 import { useApolloClient } from "@apollo/client";
+import { useState } from "react";
+
+import { Picker } from "@react-native-picker/picker";
 
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
@@ -28,6 +31,16 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
   },
+  orderToggle: {
+    color: "black",
+    fontSize: 16,
+    padding: 15,
+    paddingLeft: 20,
+  },
+  picker: {
+    marginTop: -40,
+    marginBottom: -40,
+  },
 });
 
 const Main = () => {
@@ -35,6 +48,8 @@ const Main = () => {
   const { data, loading, error } = useQuery(GET_AUTHENTICATION_INFORMATION);
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [selectedOrdering, setSelectedOrdering] = useState("CREATED_AT");
 
   if (loading) return <Text>Loading...</Text>;
 
@@ -73,9 +88,31 @@ const Main = () => {
           <Text style={styles.tabLink}>Sign up</Text>
         </Link>
       </AppBar>
+      <Pressable onPress={() => setPickerVisible(!pickerVisible)}>
+        <Text style={styles.orderToggle}>
+          Select a way to order repositories {"▼▲"[pickerVisible ? 1 : 0]}
+        </Text>
+      </Pressable>
+      {pickerVisible && (
+        <Picker
+          selectedValue={selectedOrdering}
+          onValueChange={(itemValue, itemIndex) => {
+            setSelectedOrdering(itemValue);
+            setTimeout(() => setPickerVisible(false), 200);
+          }}
+          style={styles.picker}
+        >
+          <Picker.Item label="Latest repositories" value="CREATED_AT" />
+          <Picker.Item label="Highest rating" value="RATING_AVERAGE" />
+          <Picker.Item label="Lowest rating" value="RATING_AVERAGE_LOW" />
+        </Picker>
+      )}
       <Routes>
         {/* Route for the main view */}
-        <Route path="/" element={<RepositoryList />} />
+        <Route
+          path="/"
+          element={<RepositoryList ordering={selectedOrdering} />}
+        />
         <Route path="/create_review" element={<CreateReview />} />
         {/* Route for the sign in view */}
         <Route path="/signin" element={<SignIn />} />
