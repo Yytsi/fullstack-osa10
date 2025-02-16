@@ -2,9 +2,6 @@ import { StyleSheet, View, Pressable } from "react-native";
 import { Route, Routes, Navigate, Link } from "react-router-native";
 import { useQuery } from "@apollo/client";
 import { useApolloClient } from "@apollo/client";
-import { useState } from "react";
-
-import { Picker } from "@react-native-picker/picker";
 
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";

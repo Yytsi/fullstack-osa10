@@ -7,6 +7,9 @@ import { useState } from "react";
 import Text from "./Text";
 
 import RepositoryItem from "./RepositoryItem";
+import { TextInput } from "react-native";
+
+import { useDebounce } from "use-debounce";
 
 const styles = StyleSheet.create({
   separator: {
@@ -22,6 +25,11 @@ const styles = StyleSheet.create({
     marginTop: -40,
     marginBottom: -40,
   },
+  searchKeywordField: {
+    backgroundColor: "white",
+    padding: 10,
+    margin: 10,
+  },
 });
 
 const ItemSeparator = () => <View style={styles.separator} />;
@@ -30,10 +38,12 @@ export const RepositoryListContainer = ({
   repositories,
   selectedOrdering = "CREATED_AT",
   changeOrdering = () => null,
+  changeKeyword = () => null,
   backwards = false,
 }) => {
   const navigate = useNavigate();
   const [pickerVisible, setPickerVisible] = useState(false);
+  const [searchKeyword, setSearchKeyword] = useState("");
   const repositoryNodes = repositories
     ? repositories.edges.map((edge) => edge.node)
     : [];
@@ -47,6 +57,17 @@ export const RepositoryListContainer = ({
       data={repositoryNodes}
       ListHeaderComponent={
         <>
+          <TextInput
+            testID="searchKeywordField"
+            style={[styles.searchKeywordField]}
+            placeholder="Search keyword"
+            onChangeText={(text) => {
+              setSearchKeyword(text);
+              changeKeyword(text);
+            }}
+            autoCapitalize="none"
+            value={searchKeyword}
+          />
           <Pressable onPress={() => setPickerVisible(!pickerVisible)}>
             <Text style={styles.orderToggle}>
               Select a way to order repositories {"▼▲"[pickerVisible ? 1 : 0]}
@@ -80,16 +101,23 @@ export const RepositoryListContainer = ({
 
 const RepositoryList = () => {
   const [selectedOrdering, setSelectedOrdering] = useState("CREATED_AT");
-  const { repositories } = useRepositories(selectedOrdering);
+  const [searchKeyword, setSearchKeyword] = useState("");
+  const [debouncedKeyword] = useDebounce(searchKeyword, 500);
+  const { repositories } = useRepositories(selectedOrdering, debouncedKeyword);
 
   const changeOrdering = (ordering) => {
     setSelectedOrdering(ordering);
+  };
+
+  const changeKeyword = (text) => {
+    setSearchKeyword(text);
   };
 
   return (
     <RepositoryListContainer
       selectedOrdering={selectedOrdering}
       changeOrdering={changeOrdering}
+      changeKeyword={changeKeyword}
       repositories={repositories}
       backwards={selectedOrdering.endsWith("_LOW")}
     />
