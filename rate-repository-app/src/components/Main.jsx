@@ -48,8 +48,6 @@ const Main = () => {
   const { data, loading, error } = useQuery(GET_AUTHENTICATION_INFORMATION);
   const apolloClient = useApolloClient();
   const authStorage = useAuthStorage();
-  const [pickerVisible, setPickerVisible] = useState(false);
-  const [selectedOrdering, setSelectedOrdering] = useState("CREATED_AT");
 
   if (loading) return <Text>Loading...</Text>;
 
@@ -88,31 +86,9 @@ const Main = () => {
           <Text style={styles.tabLink}>Sign up</Text>
         </Link>
       </AppBar>
-      <Pressable onPress={() => setPickerVisible(!pickerVisible)}>
-        <Text style={styles.orderToggle}>
-          Select a way to order repositories {"▼▲"[pickerVisible ? 1 : 0]}
-        </Text>
-      </Pressable>
-      {pickerVisible && (
-        <Picker
-          selectedValue={selectedOrdering}
-          onValueChange={(itemValue, itemIndex) => {
-            setSelectedOrdering(itemValue);
-            setTimeout(() => setPickerVisible(false), 200);
-          }}
-          style={styles.picker}
-        >
-          <Picker.Item label="Latest repositories" value="CREATED_AT" />
-          <Picker.Item label="Highest rating" value="RATING_AVERAGE" />
-          <Picker.Item label="Lowest rating" value="RATING_AVERAGE_LOW" />
-        </Picker>
-      )}
       <Routes>
         {/* Route for the main view */}
-        <Route
-          path="/"
-          element={<RepositoryList ordering={selectedOrdering} />}
-        />
+        <Route path="/" element={<RepositoryList />} />
         <Route path="/create_review" element={<CreateReview />} />
         {/* Route for the sign in view */}
         <Route path="/signin" element={<SignIn />} />
