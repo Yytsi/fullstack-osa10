@@ -95,6 +95,7 @@ export const RepositoryListContainer = ({
           <RepositoryItem repository={item} isSingleItem={false} />
         </Pressable>
       )}
+      initialNumToRender={repositoryNodes.length}
     />
   );
 };

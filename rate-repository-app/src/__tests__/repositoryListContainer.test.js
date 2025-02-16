@@ -1,5 +1,6 @@
 import { RepositoryListContainer } from "../components/RepositoryList";
 import { render, screen } from "@testing-library/react-native";
+import { NativeRouter } from "react-router-native";
 
 describe("RepositoryList", () => {
   describe("RepositoryListContainer", () => {
@@ -47,7 +48,11 @@ describe("RepositoryList", () => {
         ],
       };
 
-      render(<RepositoryListContainer repositories={repositories} />);
+      render(
+        <NativeRouter>
+          <RepositoryListContainer repositories={repositories} />
+        </NativeRouter>
+      );
       const descriptions = screen.getAllByTestId("repositoryItemDescription");
 
       expect(descriptions[0]).toHaveTextContent(
