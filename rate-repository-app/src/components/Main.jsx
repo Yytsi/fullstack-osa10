@@ -10,6 +10,7 @@ import AppBar from "./AppBar";
 import Text from "./Text";
 import useAuthStorage from "../hooks/useApolloClient";
 import SingleRepository from "./SingleRepository";
+import UserReviews from "./UserReviews";
 import CreateReview from "./CreateReview";
 
 import { GET_AUTHENTICATION_INFORMATION } from "../graphql/queries";
@@ -47,7 +48,6 @@ const Main = () => {
   const authStorage = useAuthStorage();
 
   if (loading) return <Text>Loading...</Text>;
-
   if (error) return <Text>Error: {error.message}</Text>;
 
   return (
@@ -60,6 +60,11 @@ const Main = () => {
         {data?.me?.username != null && (
           <Link to="/create_review" component={Pressable}>
             <Text style={styles.tabLink}>Create a review</Text>
+          </Link>
+        )}
+        {data?.me?.username != null && (
+          <Link to="/my_reviews" component={Pressable}>
+            <Text style={styles.tabLink}>My reviews</Text>
           </Link>
         )}
         {data?.me?.username == null ? (
@@ -86,6 +91,7 @@ const Main = () => {
       <Routes>
         {/* Route for the main view */}
         <Route path="/" element={<RepositoryList />} />
+        <Route path="/my_reviews" element={<UserReviews />} />
         <Route path="/create_review" element={<CreateReview />} />
         {/* Route for the sign in view */}
         <Route path="/signin" element={<SignIn />} />

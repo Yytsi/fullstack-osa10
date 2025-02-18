@@ -90,3 +90,27 @@ export const CREATE_REVIEW_MUTATION = gql`
     }
   }
 `;
+
+export const GET_CURRENT_USER = gql`
+  query getCurrentUser($includeReviews: Boolean = false) {
+    me {
+      id
+      username
+      reviews @include(if: $includeReviews) {
+        edges {
+          node {
+            id
+            text
+            rating
+            createdAt
+            repositoryId
+            repository {
+              id
+              fullName
+            }
+          }
+        }
+      }
+    }
+  }
+`;
