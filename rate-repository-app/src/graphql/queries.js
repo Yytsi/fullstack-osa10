@@ -91,6 +91,12 @@ export const CREATE_REVIEW_MUTATION = gql`
   }
 `;
 
+export const DELETE_REVIEW_MUTATION = gql`
+  mutation DeleteReview($deleteReviewId: ID!) {
+    deleteReview(id: $deleteReviewId)
+  }
+`;
+
 export const GET_CURRENT_USER = gql`
   query getCurrentUser($includeReviews: Boolean = false) {
     me {
