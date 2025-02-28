@@ -107,7 +107,12 @@ const RepositoryList = () => {
   const [selectedOrdering, setSelectedOrdering] = useState("CREATED_AT");
   const [searchKeyword, setSearchKeyword] = useState("");
   const [debouncedKeyword] = useDebounce(searchKeyword, 500);
-  const { repositories } = useRepositories(selectedOrdering, debouncedKeyword);
+  const { repositories, fetchMore } = useRepositories(
+    selectedOrdering,
+    debouncedKeyword,
+    8,
+    ""
+  );
 
   const changeOrdering = (ordering) => {
     setSelectedOrdering(ordering);
@@ -124,7 +129,7 @@ const RepositoryList = () => {
       changeKeyword={changeKeyword}
       repositories={repositories}
       backwards={selectedOrdering.endsWith("_LOW")}
-      onEndReach={() => console.log("End reached!")}
+      onEndReach={fetchMore}
     />
   );
 };
