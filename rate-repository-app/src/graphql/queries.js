@@ -4,8 +4,15 @@ export const GET_REPOSITORIES = gql`
   query GetRepositories(
     $orderBy: AllRepositoriesOrderBy
     $searchKeyword: String
+    $first: Int
+    $after: String
   ) {
-    repositories(orderBy: $orderBy, searchKeyword: $searchKeyword) {
+    repositories(
+      orderBy: $orderBy
+      searchKeyword: $searchKeyword
+      first: $first
+      after: $after
+    ) {
       edges {
         node {
           id
@@ -19,6 +26,12 @@ export const GET_REPOSITORIES = gql`
           ratingAverage
           url
         }
+        cursor
+      }
+      pageInfo {
+        endCursor
+        startCursor
+        hasNextPage
       }
     }
   }

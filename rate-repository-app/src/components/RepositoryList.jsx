@@ -40,6 +40,7 @@ export const RepositoryListContainer = ({
   changeOrdering = () => null,
   changeKeyword = () => null,
   backwards = false,
+  onEndReach = () => null,
 }) => {
   const navigate = useNavigate();
   const [pickerVisible, setPickerVisible] = useState(false);
@@ -96,6 +97,8 @@ export const RepositoryListContainer = ({
         </Pressable>
       )}
       initialNumToRender={repositoryNodes.length}
+      onEndReached={onEndReach}
+      onEndReachedThreshold={0.5}
     />
   );
 };
@@ -121,6 +124,7 @@ const RepositoryList = () => {
       changeKeyword={changeKeyword}
       repositories={repositories}
       backwards={selectedOrdering.endsWith("_LOW")}
+      onEndReach={() => console.log("End reached!")}
     />
   );
 };

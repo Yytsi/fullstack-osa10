@@ -7,7 +7,7 @@ const useRepositories = (ordering = "CREATED_AT", searchKeyword = "") => {
   }
   const { data, loading, error, refetch } = useQuery(GET_REPOSITORIES, {
     fetchPolicy: "cache-and-network",
-    variables: { orderBy: ordering, searchKeyword },
+    variables: { orderBy: ordering, searchKeyword, first: 3, after: "" },
   });
 
   return {
