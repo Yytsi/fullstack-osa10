@@ -76,12 +76,34 @@ const ItemSeparator = () => <View style={styles.separator} />;
 const SingleRepository = () => {
   const { id } = useParams();
 
-  const { data, loading, error } = useQuery(GET_REPOSITORY, {
+  const { data, loading, fetchMore, error } = useQuery(GET_REPOSITORY, {
     fetchPolicy: "cache-and-network",
-    variables: { id },
+    variables: { id, first: 8, after: "" },
   });
 
   const repository = data?.repository;
+
+  const handleFetchMore = () => {
+    console.log("Fetching more repositories", data.repository.reviews.pageInfo);
+    const canFetchMore =
+      !loading && data?.repository.reviews.pageInfo.hasNextPage;
+
+    if (!canFetchMore) {
+      return;
+    }
+
+    console.log(
+      "Fetching more reviews, with ",
+      data.repository.reviews.pageInfo.endCursor
+    );
+
+    fetchMore({
+      variables: {
+        after: data.repository.reviews.pageInfo.endCursor,
+        first: 8,
+      },
+    });
+  };
 
   if (!repository || loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message + ""}</Text>;
@@ -98,6 +120,11 @@ const SingleRepository = () => {
           <ItemSeparator />
         </>
       )}
+      onEndReached={() => {
+        console.log("You've reached the end of the reviews list");
+        handleFetchMore();
+      }}
+      onEndReachedThreshold={0.5}
     />
   );
 };
